@@ -1,57 +1,54 @@
-import iziToast from 'izitoast';
-import SimpleLightbox from 'simplelightbox';
-import 'izitoast/dist/css/iziToast.min.css';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-const loader = document.getElementById('loader');
-const gallery = document.getElementById('gallery');
-const lightbox = new SimpleLightbox('.gallery a');
-const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-export function renderGallery(images, isFirstLoad) {
-  if (isFirstLoad) {
-    loader.style.display = 'none';
-  }
-
-  if (images.length === 0) {
-    iziToast.info({
-      title: 'Info',
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
-    });
-    hideLoadMoreButton();
-    return;
-  }
-
-  images.forEach(image => {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.innerHTML = `
-            <a href="${image.largeImageURL}" data-lightbox="gallery">
-                <img src="${image.webformatURL}" alt="${image.tags}">
-            </a>
-            <p>Likes: ${image.likes}</p>
-            <p>Views: ${image.views}</p>
-            <p>Comments: ${image.comments}</p>
-            <p>Downloads: ${image.downloads}</p>
-        `;
-    gallery.appendChild(card);
-  });
-
-  lightbox.refresh();
-}
-
-export function hideLoadMoreButton() {
-  loadMoreBtn.style.display = 'none';
-}
-
-export function showLoadMoreButton() {
-  loadMoreBtn.style.display = 'block';
-}
-
-export function showEndOfCollectionMessage() {
-  iziToast.info({
-    title: 'Info',
-    message: "We're sorry, but you've reached the end of search results.",
-  });
-}
+const gallery = document.querySelector('.gallery');
+const img = gallery.querySelectorAll('img');
+const loadMoreBtn = document.querySelector('.add-content');
+const lightbox = new SimpleLightbox(".gallery a", {
+    captionPosition: 'bottom',
+    captionDelay: '250',
+    captionsData: 'alt',
+    close: true,
+    animationSpeed: 200,
+    preloading: true,
+    loop:	true,
+    scaleImageToRatio: true,
+    scrollZoomFactor: 0.9,
+    overlay: true,
+    overlayOpacity: 1.0,
+    spinner:	true
+});
+export function renderData(data) {
+        const img = data.hits;
+        const arrayOfImg = img.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+                return `<li class="list-link">
+                            <a href="${largeImageURL}">
+                                <img class="gallery-links" src="${webformatURL}" alt="${tags}"></a>
+                            <div class="parameters">
+                                    <ul class="parameters-list">
+                                        <li class="parameters-list-item">likes:</li>
+                                        <li class="parameters-list-item">${likes}</li>
+                                    </ul>
+                                    <ul class="parameters-list">
+                                        <li class="parameters-list-item">views:</li>
+                                        <li class="parameters-list-item">${views}</li>
+                                    </ul>
+                                    <ul class="parameters-list">
+                                        <li class="parameters-list-item">comments:</li>
+                                        <li class="parameters-list-item">${comments}</li>
+                                    </ul>
+                                    <ul class="parameters-list">
+                                        <li class="parameters-list-item">downloads:</li>
+                                        <li class="parameters-list-item">${downloads}</li>
+                                    </ul>
+                            </div>
+                        </li>`
+       }).join('');
+     
+    gallery.insertAdjacentHTML('beforeend', arrayOfImg);
+  
+    if (img.length > 14) {
+        loadMoreBtn.style.display = 'block';
+    }
+    lightbox.refresh();
+};
