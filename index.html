@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/goit-js-hw-12/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vanilla App Template</title>
-  
-  <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
-  <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-64b55ca9.js">
-  <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-cf6910df.css">
-  <link rel="stylesheet" href="/goit-js-hw-12/assets/index-4b3978b9.css">
-</head>
-
-<body>
-
-  <section>
-    <h1>search images</h1>
-    <form class="feedback-form" autocomplete="off">
-      <label>
-        <input type="text" name="serchfield" autofocus placeholder="search images..." />
-      </label>
-
-      <button type="submit">search</button>
-    </form>
-   
-    <ul class="gallery"></ul>
-    <span class="loader "></span>
-    <button class="add-content ">Load more</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css"
+      integrity="sha512-4xo8blKMVCiXpTaLzQSLSw3KFOVPWhm/TRtuPVc4WG6kUgjH6J03IBuG7JZPkcWMxJ5huwaBpOpnwYElP/m6wg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     
-</body>
+    <title>Homework №12</title>
+    <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-da186403.js">
+    <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-a51daae5.css">
+    <link rel="stylesheet" href="/goit-js-hw-12/assets/index-16d59050.css">
+  </head>
+  <body>
+    <div class="work-area">
+      <form action="submit" class="form-search">
+        <input name="inputSearch" type="text" placeholder="Search images..." />
+        <button name="buttonSearch" type="submit">Search</button>
+      </form>
 
+      <ul name="images-holder" class="images-place"></ul>
+      <button name="buttonMore" class="buttonMore" hidden>Load more ...</button>
+      <span class="loader"></span>
+    </div>
+    
+  </body>
 </html>
