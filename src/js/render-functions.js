@@ -1,42 +1,58 @@
-export function makeGallery(getedObject) {
-  const neccesaryArray = getedObject.hits;
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-  return neccesaryArray
+export function renderMarcup(data) {
+  return data.hits
     .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `
-        <li class="card">
-            <div class="place-for-image">
-                <a href="${largeImageURL}">
-                    <img src="${webformatURL}" alt="${tags}" class="picture"/>
-                </a>
+      el =>
+        `<div class="gallery-item">
+            <a class="gallery-link" href="${el.largeImageURL}">
+                <img class="gallery-image" src="${el.webformatURL}" alt="${el.tags}" />
+            </a>
+            <div class="gallery-item-info">
+                <p class="gallery-item-info-par">
+                    <span class="gallery-item-info-span">Likes: <span>${el.likes}</span>
+                    </span>
+                </p>
+                <p class="gallery-item-info-par">
+                    <span class="gallery-item-info-span">Views: <span>${el.views}</span>
+                    </span>
+                </p>
+                <p class="gallery-item-info-par">
+                    <span class="gallery-item-info-span">Comments: <span>${el.comments}</span>
+                    </span>
+                </p>
+                <p class="gallery-item-info-par">
+                    <span class="gallery-item-info-span">Downloads: <span>${el.downloads}</span>
+                    </span>
+                </p>
             </div>
-            <div class="info-text">
-                <div class="description">
-                    <span class="bold-text">Likes</span>
-                    <span class="info-value">${likes}</span>
-                </div>
-                <div class="description">
-                    <span class="bold-text">Views</span>
-                    <span class="info-value">${views}</span>
-                </div>
-                <div class="description">
-                    <span class="bold-text">Comments</span>
-                    <span class="info-value">${comments}</span>
-                </div>
-                <div class="description">
-                    <span class="bold-text">Downloads</span>
-                    <span class="info-value">${downloads}</span>
-                </div>
-            </div>
-        </li>`
+        </div>`
     )
     .join('');
+}
+
+export function showEndOfListMessage() {
+  iziToast.info({
+    timeout: 3000,
+    position: 'topRight',
+    message: "We're sorry, but you've reached the end of search results.",
+  });
+}
+
+export function showEmptyInputMessage() {
+  iziToast.info({
+    timeout: 3000,
+    position: 'topRight',
+    message: "The search query can not be epty!",
+  });
+}
+
+export function noImagesMessage() {
+  iziToast.error({
+    timeout: 3000,
+    position: 'topRight',
+    message:
+      'There are no images matching your search query. Please, enter something else!',
+  });
 }
