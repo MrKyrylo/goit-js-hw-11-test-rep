@@ -46,18 +46,22 @@ async function onSubmit(event) {
   loader.style.display = 'block';
 
   try {
-    const images = await fetchImages(searchWord, currPage).then(data => {
-      const marcup = renderMarcup(data);
-      if (data.hits.length === 0) {
-        noImagesMessage();
-        loadMoreBtn.style.display = 'none';
-        loader.style.display = 'none';
-        return;
-      }
-      container.insertAdjacentHTML('beforeend', marcup);
-      lightbox.refresh();
+    const data = await fetchImages(searchWord, currPage);
+    const marcup = renderMarcup(data);
+    if (data.hits.length === 0) {
+      noImagesMessage();
+      loadMoreBtn.style.display = 'none';
       loader.style.display = 'none';
-    });
+      return;
+    }
+    container.insertAdjacentHTML('beforeend', marcup);
+    lightbox.refresh();
+    loader.style.display = 'none';
+    if (data.hits.length < 15) {
+      loadMoreBtn.style.display = 'none';
+      showEndOfListMessage();
+      lightbox.refresh();
+    }
   } catch (error) {
     console.error('Error:', error);
   }
@@ -67,23 +71,22 @@ async function onSubmit(event) {
 async function onLoadMore() {
   currPage += 1;
   try {
-    const images = await fetchImages(searchWord, currPage).then(data => {
-      const marcup = renderMarcup(data);
-      container.insertAdjacentHTML('beforeend', marcup);
-      lightbox.refresh();
+    const data = await fetchImages(searchWord, currPage);
+    const marcup = renderMarcup(data);
+    container.insertAdjacentHTML('beforeend', marcup);
+    lightbox.refresh();
 
-      const cardHeight = container.getBoundingClientRect().height;
-      window.scrollBy({
-        top: 2 * cardHeight,
-        behavior: 'smooth',
-      });
-
-      if (data.hits.length <= 14) {
-        loadMoreBtn.style.display = 'none';
-        showEndOfListMessage();
-        lightbox.refresh();
-      }
+    const cardHeight = container.getBoundingClientRect().height;
+    window.scrollBy({
+      top: 2 * cardHeight,
+      behavior: 'smooth',
     });
+
+    if (data.hits.length < 15) {
+      loadMoreBtn.style.display = 'none';
+      showEndOfListMessage();
+      lightbox.refresh();
+    }
   } catch (error) {
     console.error('Error:', error);
   }
